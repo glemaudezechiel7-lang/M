@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Amour pour MILENCIA  </title>
+  <style>
+    /* Style général */
+    body {
+      background: linear-gradient(to right, #ffcccc, #ffe6e6);
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Nom principal avec effet pulsation */
+    h1 {
+      color: #d10056;
+      font-size: 3em;
+      margin-top: 20px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); color:#ff3366; }
+      100% { transform: scale(1); }
+    }
+
+    /* Style des mots d’amour */
+    .mot {
+      font-size: 2em;
+      color: #b3003c;
+      opacity: 0;
+      animation: fadeInOut 6s infinite;
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* Cœurs et bisous flottants */
+    .coeur, .bisou {
+      position: absolute;
+      font-size: 2em;
+      animation: flotter 10s linear infinite;
+    }
+    .coeur { color: red; }
+    .bisou { color: pink; }
+    @keyframes flotter {
+      0% { top: 100%; opacity: 0; }
+      20% { opacity: 1; }
+      100% { top: -10%; opacity: 0; }
+    }
+
+    /* Nom GATCHINA répété partout */
+    .nom {
+      position: absolute;
+      font-size: 1.5em;
+      color: #ff0066;
+      animation: apparaitre 8s linear infinite;
+    }
+    @keyframes apparaitre {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0; transform: scale(0.5); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Nom principal -->
+  <h1>💖 MILENCIA 💖</h1>
+
+
+  <div id="mots"></div>
+
+
+
+  <script>
+    // Liste élargie de mots d’amour
+   // Liste élargie de mots d’amour très romantiques
+const mots = [
+  "Je t'aime plus que les étoiles <br>   I LOVE YOU",
+  "Ton sourire illumine mes nuits",
+  "Tu es mon souffle, ma vie",
+  "Chaque battement de mon cœur est pour toi",
+  "Ton regard est mon paradis",
+  "Tu es mon rêve devenu réalité",
+  "Mon âme danse avec la tienne",
+  "Ton amour est ma lumière éternelle",
+  "Je veux vieillir à tes côtés",
+  "Tu es mon univers, mon tout",
+  "Ton parfum est mon ivresse",
+  "Je me perds dans tes bras",
+  "Ton rire est ma mélodie préférée",
+  "Tu es mon miracle quotidien",
+  "Ton amour est ma force",
+  "Je t’aime d’un amour infini",
+  "Ton nom est gravé dans mon cœur",
+  "Tu es mon soleil après la pluie",
+  "Ton amour est ma raison d’exister",
+  "Je t’aime au-delà du temps et de l’espace"
+];
+
+    let index = 0;
+    const div = document.getElementById("mots");
+
+    // Afficher les mots en boucle
+    function afficherMot() {
+      div.innerHTML = "<div class='mot'>" + mots[index] + "</div>";
+      index = (index + 1) % mots.length;
+    }
+    setInterval(afficherMot, 4000);
+    afficherMot();
+
+    // Générer des cœurs et des bisous flottants
+    function creerSymbole() {
+      const symbole = document.createElement("div");
+      symbole.className = Math.random() > 0.5 ? "coeur" : "bisou";
+      symbole.innerHTML = symbole.className === "coeur" ? "❤" : "💋";
+      symbole.style.left = Math.random() * window.innerWidth + "px";
+      symbole.style.top = window.innerHeight + "px";
+      document.body.appendChild(symbole);
+      setTimeout(() => symbole.remove(), 10000);
+    }
+    setInterval(creerSymbole, 1000);
+
+   
+    function creerNom() {
+      const nom = document.createElement("div");
+      nom.className = "nom";
+      nom.innerHTML = "MLENCIA";
+      nom.style.left = Math.random() * window.innerWidth + "px";
+      nom.style.top = Math.random() * window.innerHeight + "px";
+      document.body.appendChild(nom);
+      setTimeout(() => nom.remove(), 8000);
+    }
+    setInterval(creerNom, 2000);
+  </script>
+</body>
+</html>
