@@ -1,142 +1,318 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Amour pour MILENCIA  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ff0066">
+  <title>Amour pour MILENCIA</title>
   <style>
-    /* Style général */
-    body {
-      background: linear-gradient(to right, #ffcccc, #ffe6e6);
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      overflow: hidden;
+    :root{
+      --rose:       #ff0066;
+      --rose-clair: #ff6ba8;
+      --rose-fonce: #b3003c;
+      --or:         #ffd700;
+      --blanc:      #fff0f6;
     }
 
-    /* Nom principal avec effet pulsation */
-    h1 {
-      color: #d10056;
-      font-size: 3em;
-      margin-top: 20px;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); color:#ff3366; }
-      100% { transform: scale(1); }
+    *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+    html, body{
+      height:100%;
+      overflow:hidden;
+      overscroll-behavior:none;
     }
 
-    /* Style des mots d’amour */
-    .mot {
-      font-size: 2em;
-      color: #b3003c;
-      opacity: 0;
-      animation: fadeInOut 6s infinite;
-    }
-    @keyframes fadeInOut {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
-    /* Cœurs et bisous flottants */
-    .coeur, .bisou {
-      position: absolute;
-      font-size: 2em;
-      animation: flotter 10s linear infinite;
-    }
-    .coeur { color: red; }
-    .bisou { color: pink; }
-    @keyframes flotter {
-      0% { top: 100%; opacity: 0; }
-      20% { opacity: 1; }
-      100% { top: -10%; opacity: 0; }
+    body{
+      font-family:'Arial','Helvetica Neue',sans-serif;
+      text-align:center;
+      background:
+        radial-gradient(circle at 50% 25%, #fff0f6 0%, #ffc2dd 30%, #ff7ab3 62%, #ff2d80 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      min-height:100dvh;              /* Android : hauteur réelle de l'écran */
+      position:relative;
+      padding:
+        env(safe-area-inset-top, 0)
+        env(safe-area-inset-right, 0)
+        env(safe-area-inset-bottom, 0)
+        env(safe-area-inset-left, 0);
+      user-select:none;
+      -webkit-user-select:none;
+      touch-action:manipulation;
     }
 
-    /* Nom GATCHINA répété partout */
-    .nom {
-      position: absolute;
-      font-size: 1.5em;
-      color: #ff0066;
-      animation: apparaitre 8s linear infinite;
+    /* ---------- HALO LUMINEUX DE FOND ---------- */
+    .aura{
+      position:fixed;
+      inset:-25%;
+      z-index:0;
+      pointer-events:none;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(255,255,255,.90) 0%, rgba(255,255,255,0) 42%),
+        radial-gradient(circle at 18% 82%, rgba(255,0,102,.45), transparent 55%),
+        radial-gradient(circle at 82% 18%, rgba(255,215,0,.40), transparent 55%);
+      animation:auraPulse 5s ease-in-out infinite;
+      will-change:transform, opacity;
     }
-    @keyframes apparaitre {
-      0% { opacity: 0; transform: scale(0.5); }
-      50% { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0; transform: scale(0.5); }
+    @keyframes auraPulse{
+      0%,100%{ opacity:.60; transform:scale(1); }
+      50%    { opacity:1;    transform:scale(1.15); }
+    }
+
+    /* ---------- COUCHE DES PARTICULES ---------- */
+    .ciel{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+      z-index:1;
+    }
+
+    /* ---------- CŒURS / BISOUS / ÉTINCELLES ---------- */
+    .coeur, .bisou{
+      position:absolute;
+      bottom:-14vh;
+      left:0;
+      line-height:1;
+      font-size:var(--taille);
+      opacity:0;
+      will-change:transform, opacity;
+      animation:flotter var(--duree) linear var(--retard) infinite;
+    }
+    .coeur{
+      filter:drop-shadow(0 0 6px rgba(255,0,102,.9))
+             drop-shadow(0 0 16px rgba(255,150,200,.7));
+    }
+    .bisou{
+      filter:drop-shadow(0 0 6px rgba(255,105,180,.9))
+             drop-shadow(0 0 16px rgba(255,182,193,.7));
+    }
+    @keyframes flotter{
+      0%   { transform:translate3d(0,0,0) scale(.35) rotate(0deg);            opacity:0; }
+      12%  { opacity:1; }
+      85%  { opacity:1; }
+      100% { transform:translate3d(var(--drift), -125vh, 0) scale(1.35)
+                       rotate(var(--rot));                                     opacity:0; }
+    }
+
+    /* ---------- NOM « MILENCIA » QUI APPARAÎT PARTOUT ---------- */
+    .nom{
+      position:absolute;
+      white-space:nowrap;
+      font-weight:900;
+      font-size:var(--taille);
+      color:#fff;
+      opacity:0;
+      will-change:transform, opacity;
+      text-shadow:
+        0 0 6px  #ff0066,
+        0 0 16px #ff0066,
+        0 0 32px #ff5c9d,
+        0 0 60px rgba(255,0,102,.8);
+      animation:apparaitre var(--duree) ease-in-out var(--retard) infinite;
+    }
+    @keyframes apparaitre{
+      0%   { opacity:0; transform:scale(.35) rotate(-10deg); }
+      50%  { opacity:1; transform:scale(1.20) rotate(5deg);  }
+      100% { opacity:0; transform:scale(.35) rotate(-10deg); }
+    }
+
+    /* ---------- SCÈNE CENTRALE ---------- */
+    .scene{
+      position:relative;
+      z-index:2;
+      width:100%;
+      padding:0 4vw;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:clamp(12px, 3.5vh, 40px);
+    }
+
+    /* ---------- TITRE PRINCIPAL ---------- */
+    .titre{
+      font-size:clamp(2.8rem, 14vw, 6.5rem);   /* GRAND sur petit écran */
+      font-weight:900;
+      letter-spacing:clamp(1px, .7vw, 10px);
+      line-height:1.05;
+      background:linear-gradient(
+        100deg,
+        #ff0066 0%, #ff5c9d 20%, #fff0f6 38%,
+        #ffd700 50%, #fff0f6 62%, #ff5c9d 80%, #ff0066 100%
+      );
+      background-size:250% 100%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      -webkit-text-fill-color:transparent;
+      will-change:transform, filter, background-position;
+      animation:
+        pulse     2.6s ease-in-out infinite,
+        brillance 3.6s linear      infinite;
+    }
+
+    @keyframes pulse{
+      0%,100%{
+        transform:scale(1);
+        filter:drop-shadow(0 0 10px rgba(255,0,102,.85))
+               drop-shadow(0 0 26px rgba(255,0,102,.55));
+      }
+      50%{
+        transform:scale(1.13);
+        filter:drop-shadow(0 0 16px rgba(255,255,255,.95))
+               drop-shadow(0 0 42px rgba(255,0,102,.95));
+      }
+    }
+
+    @keyframes brillance{
+      0%   { background-position:0%   50%; }
+      100% { background-position:250% 50%; }
+    }
+
+    /* ---------- MOTS D'AMOUR ---------- */
+    #mots{
+      min-height:clamp(4rem, 18vh, 10rem);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+    }
+
+    .mot{
+      font-size:clamp(1.6rem, 8vw, 3.5rem);   /* PLUS GRAND sur petit écran */
+      font-weight:700;
+      color:#fff;
+      opacity:0;
+      letter-spacing:.5px;
+      line-height:1.25;
+      max-width:90vw;
+      margin:0 auto;
+      text-shadow:
+        0 0 8px  #ff0066,
+        0 0 20px #ff0066,
+        0 0 40px #ff5c9d,
+        0 0 70px rgba(255,0,102,.75);
+    }
+    .mot.visible{ animation:motAnim 4s ease-in-out; }
+    @keyframes motAnim{
+      0%   { opacity:0; transform:scale(.75) translateY(14px); filter:blur(8px); }
+      18%  { opacity:1; transform:scale(1.08) translateY(0);   filter:blur(0);   }
+      32%  { transform:scale(1); }
+      72%  { opacity:1; }
+      100% { opacity:0; transform:scale(1.20) translateY(-10px); filter:blur(6px); }
+    }
+
+    /* ---------- ACCESSIBILITÉ : MOINS D'ANIMATIONS ---------- */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; }
+      .mot{ opacity:1; }
     }
   </style>
 </head>
 <body>
-  <!-- Nom principal -->
-  <h1>💖 MILENCIA 💖</h1>
 
+  <div class="aura"></div>
+  <div class="ciel" id="ciel"></div>
 
-  <div id="mots"></div>
-
-
+  <main class="scene">
+    <h1 class="titre">💖 MILENCIA 💖</h1>
+    <div id="mots"></div>
+  </main>
 
   <script>
-    // Liste élargie de mots d’amour
-   // Liste élargie de mots d’amour très romantiques
-const mots = [
-  "Je t'aime plus que les étoiles <br>   I LOVE YOU",
-  "Ton sourire illumine mes nuits",
-  "Tu es mon souffle, ma vie",
-  "Chaque battement de mon cœur est pour toi",
-  "Ton regard est mon paradis",
-  "Tu es mon rêve devenu réalité",
-  "Mon âme danse avec la tienne",
-  "Ton amour est ma lumière éternelle",
-  "Je veux vieillir à tes côtés",
-  "Tu es mon univers, mon tout",
-  "Ton parfum est mon ivresse",
-  "Je me perds dans tes bras",
-  "Ton rire est ma mélodie préférée",
-  "Tu es mon miracle quotidien",
-  "Ton amour est ma force",
-  "Je t’aime d’un amour infini",
-  "Ton nom est gravé dans mon cœur",
-  "Tu es mon soleil après la pluie",
-  "Ton amour est ma raison d’exister",
-  "Je t’aime au-delà du temps et de l’espace"
-];
+    // Liste élargie de mots d’amour très romantiques
+    const mots = [
+      "Je t'aime plus que les étoiles <br> I LOVE YOU",
+      "Ton sourire illumine mes nuits",
+      "Tu es mon souffle, ma vie",
+      "Chaque battement de mon cœur est pour toi",
+      "Ton regard est mon paradis",
+      "Tu es mon rêve devenu réalité",
+      "Mon âme danse avec la tienne",
+      "Ton amour est ma lumière éternelle",
+      "Je veux vieillir à tes côtés",
+      "Tu es mon univers, mon tout",
+      "Ton parfum est mon ivresse",
+      "Je me perds dans tes bras",
+      "Ton rire est ma mélodie préférée",
+      "Tu es mon miracle quotidien",
+      "Ton amour est ma force",
+      "Je t’aime d’un amour infini",
+      "Ton nom est gravé dans mon cœur",
+      "Tu es mon soleil après la pluie",
+      "Ton amour est ma raison d’exister",
+      "Je t’aime au-delà du temps et de l’espace"
+    ];
 
+    const divMots = document.getElementById("mots");
     let index = 0;
-    const div = document.getElementById("mots");
 
-    // Afficher les mots en boucle
     function afficherMot() {
-      div.innerHTML = "<div class='mot'>" + mots[index] + "</div>";
+      divMots.innerHTML = "<div class='mot'>" + mots[index] + "</div>";
       index = (index + 1) % mots.length;
+      // Force l'animation
+      const motEl = divMots.querySelector('.mot');
+      if (motEl) {
+        motEl.classList.remove('visible');
+        void motEl.offsetWidth;
+        motEl.classList.add('visible');
+      }
     }
-    setInterval(afficherMot, 4000);
     afficherMot();
+    setInterval(afficherMot, 4000);
 
-    // Générer des cœurs et des bisous flottants
-    function creerSymbole() {
-      const symbole = document.createElement("div");
-      symbole.className = Math.random() > 0.5 ? "coeur" : "bisou";
-      symbole.innerHTML = symbole.className === "coeur" ? "❤" : "💋";
-      symbole.style.left = Math.random() * window.innerWidth + "px";
-      symbole.style.top = window.innerHeight + "px";
-      document.body.appendChild(symbole);
-      setTimeout(() => symbole.remove(), 10000);
-    }
-    setInterval(creerSymbole, 1000);
+    // ---------- PARTICULES (cœurs, bisous, noms) ----------
+    const ciel = document.getElementById('ciel');
+    const rand = (a, b) => a + Math.random() * (b - a);
 
-   
-    function creerNom() {
-      const nom = document.createElement("div");
-      nom.className = "nom";
-      nom.innerHTML = "MLENCIA";
-      nom.style.left = Math.random() * window.innerWidth + "px";
-      nom.style.top = Math.random() * window.innerHeight + "px";
-      document.body.appendChild(nom);
-      setTimeout(() => nom.remove(), 8000);
+    function creerParticules() {
+      ciel.innerHTML = '';
+      const L = window.innerWidth;
+
+      // Cœurs & bisous
+      const emojis = ['❤️','💖','💋','💕','💗','💞','😘','✨','💝'];
+      const nb = L < 420 ? 22 : L < 768 ? 30 : 44;
+
+      for (let i = 0; i < nb; i++) {
+        const el = document.createElement('div');
+        el.className = Math.random() > 0.5 ? 'coeur' : 'bisou';
+        el.textContent = emojis[(Math.random() * emojis.length) | 0];
+        el.style.left = rand(0, 94).toFixed(1) + 'vw';
+        el.style.setProperty('--taille', rand(1.1, 2.8).toFixed(2) + 'rem');
+        el.style.setProperty('--duree',  rand(7, 15).toFixed(1) + 's');
+        el.style.setProperty('--retard', (-rand(0, 15)).toFixed(1) + 's');
+        el.style.setProperty('--drift',  rand(-12, 12).toFixed(1) + 'vw');
+        el.style.setProperty('--rot',    Math.round(rand(-360, 360)) + 'deg');
+        ciel.appendChild(el);
+      }
+
+      // Noms MILENCIA
+      const nbNoms = L < 420 ? 6 : L < 768 ? 8 : 11;
+      for (let i = 0; i < nbNoms; i++) {
+        const el = document.createElement('div');
+        el.className = 'nom';
+        el.textContent = Math.random() > .5 ? 'MILENCIA' : 'MILENCIA ❤️';
+        el.style.left = rand(0, 78).toFixed(1) + 'vw';
+        el.style.top  = rand(3, 88).toFixed(1) + 'vh';
+        el.style.setProperty('--taille', rand(0.9, 1.9).toFixed(2) + 'rem');
+        el.style.setProperty('--duree',  rand(6, 11).toFixed(1) + 's');
+        el.style.setProperty('--retard', (-rand(0, 10)).toFixed(1) + 's');
+        ciel.appendChild(el);
+      }
     }
-    setInterval(creerNom, 2000);
+
+    creerParticules();
+
+    let tmr;
+    window.addEventListener('resize', () => {
+      clearTimeout(tmr);
+      tmr = setTimeout(creerParticules, 400);
+    });
+
+    // Empêche le scroll/zoom accidentel sur Android
+    document.addEventListener('touchmove', e => e.preventDefault(), { passive:false });
   </script>
 </body>
 </html>
